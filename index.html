@@ -1,233 +1,108 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Kalkulator Sederhana</title>
-	<style>
-		:root {
-			--text: #000000;
-		}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Sederhana</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 30px;
+    }
 
-		* { box-sizing: border-box; }
+    .calculator {
+      max-width: 300px;
+      margin: 50px auto;
+      background: white;
+      border: 2px solid #000;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-		body {
-			margin: 0;
-			padding: 24px;
-			color: var(--text);
-			background: #ffffff;
-			font-family: Georgia, "Times New Roman", serif;
-		}
+    h1 {
+      text-align: center;
+      margin: 0 0 20px;
+      font-size: 24px;
+    }
 
-		.calculator {
-			width: min(100%, 360px);
-			margin: 0 auto;
-		}
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
 
-		.title {
-			margin: 0 0 14px;
-			font-size: 1.2rem;
-			font-weight: bold;
-		}
+    button {
+      padding: 20px;
+      font-size: 24px;
+      border: 2px solid #000;
+      background: white;
+      cursor: pointer;
+    }
 
-		.display {
-			min-height: 86px;
-			display: flex;
-			flex-direction: column;
-			align-items: flex-end;
-			justify-content: flex-end;
-			padding: 8px 0;
-			border-bottom: 1px solid #000000;
-			text-align: right;
-		}
+    button:hover {
+      background: #000;
+      color: white;
+    }
 
-		.previous-operand {
-			min-height: 22px;
-			font-size: 0.95rem;
-		}
-
-		.current-operand {
-			width: 100%;
-			overflow: hidden;
-			font-size: clamp(2rem, 10vw, 2.8rem);
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-
-		.keys {
-			display: grid;
-			grid-template-columns: repeat(4, 1fr);
-			gap: 8px;
-			margin-top: 14px;
-		}
-
-		button {
-			min-height: 52px;
-			border: 1px solid #000000;
-			border-radius: 0;
-			color: #000000;
-			background: #ffffff;
-			cursor: pointer;
-			font: inherit;
-			font-size: 1.1rem;
-		}
-
-		button:hover,
-		button:active,
-		.operator:hover,
-		.equals:hover {
-			color: #ffffff;
-			background: #000000;
-		}
-
-		button:focus-visible {
-			outline: 2px solid #000000;
-			outline-offset: 2px;
-		}
-
-		.span-two { grid-column: span 2; }
-	</style>
+    .hasil {
+      margin-top: 20px;
+      min-height: 30px;
+      font-size: 18px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-	<main class="calculator" aria-label="Kalkulator sederhana">
-		<div class="title">Kalkulator</div>
-		<section class="display" aria-live="polite">
-			<div class="previous-operand" data-previous-operand></div>
-			<div class="current-operand" data-current-operand>0</div>
-		</section>
+  <div class="calculator">
+    <h1>Kalkulator</h1>
 
-		<section class="keys">
-			<button class="clear span-two" data-action="clear">AC</button>
-			<button class="operator" data-action="delete">DEL</button>
-			<button class="operator" data-operation="divide">÷</button>
-			<button data-number="7">7</button>
-			<button data-number="8">8</button>
-			<button data-number="9">9</button>
-			<button class="operator" data-operation="multiply">×</button>
-			<button data-number="4">4</button>
-			<button data-number="5">5</button>
-			<button data-number="6">6</button>
-			<button class="operator" data-operation="subtract">−</button>
-			<button data-number="1">1</button>
-			<button data-number="2">2</button>
-			<button data-number="3">3</button>
-			<button class="operator" data-operation="add">+</button>
-			<button class="span-two" data-number="0">0</button>
-			<button data-number=".">.</button>
-			<button class="equals" data-action="equals">=</button>
-		</section>
-	</main>
+    <div class="buttons">
+      <button>+</button>
+      <button>-</button>
+      <button>×</button>
+      <button>÷</button>
+    </div>
 
-	<script>
-		class Calculator {
-			constructor(previousOperandElement, currentOperandElement) {
-				this.previousOperandElement = previousOperandElement;
-				this.currentOperandElement = currentOperandElement;
-				this.clear();
-			}
+    <div class="hasil" id="hasil"></div>
+  </div>
 
-			clear() {
-				this.currentOperand = '';
-				this.previousOperand = '';
-				this.operation = undefined;
-			}
+  <script>
+    const tombol = document.querySelectorAll('button');
+    const hasil = document.getElementById('hasil');
 
-			delete() {
-				this.currentOperand = this.currentOperand.toString().slice(0, -1);
-			}
+    tombol.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const angka1 = Number(prompt('Masukkan angka pertama:'));
+        const angka2 = Number(prompt('Masukkan angka kedua:'));
 
-			appendNumber(number) {
-				if (number === '.' && this.currentOperand.includes('.')) return;
-				this.currentOperand = this.currentOperand.toString() + number;
-			}
+        if (isNaN(angka1) || isNaN(angka2)) {
+          hasil.textContent = 'Input harus angka!';
+          return;
+        }
 
-			chooseOperation(operation) {
-				if (this.currentOperand === '' && this.previousOperand === '') return;
-				if (this.currentOperand === '' && this.previousOperand !== '') {
-					this.operation = operation;
-					return;
-				}
-				if (this.previousOperand !== '') this.compute();
-				this.operation = operation;
-				this.previousOperand = this.currentOperand;
-				this.currentOperand = '';
-			}
+        const operasi = this.textContent;
+        let jawaban = 0;
 
-			compute() {
-				const previous = parseFloat(this.previousOperand);
-				const current = parseFloat(this.currentOperand);
-				if (Number.isNaN(previous) || Number.isNaN(current)) return;
+        if (operasi === '+') {
+          jawaban = angka1 + angka2;
+        } else if (operasi === '-') {
+          jawaban = angka1 - angka2;
+        } else if (operasi === '×') {
+          jawaban = angka1 * angka2;
+        } else if (operasi === '÷') {
+          if (angka2 === 0) {
+            hasil.textContent = 'Tidak bisa dibagi 0';
+            return;
+          }
+          jawaban = angka1 / angka2;
+        }
 
-				const results = {
-					add: previous + current,
-					subtract: previous - current,
-					multiply: previous * current,
-					divide: current === 0 ? 'Tidak bisa dibagi 0' : previous / current
-				};
-				this.currentOperand = results[this.operation];
-				this.previousOperand = '';
-				this.operation = undefined;
-			}
-
-			updateDisplay() {
-				this.currentOperandElement.textContent = this.currentOperand || '0';
-				this.previousOperandElement.textContent = this.operation
-					? `${this.previousOperand} ${this.getOperationSymbol(this.operation)}`
-					: '';
-			}
-
-			getOperationSymbol(operation) {
-				return { add: '+', subtract: '−', multiply: '×', divide: '÷' }[operation];
-			}
-		}
-
-		const calculator = new Calculator(
-			document.querySelector('[data-previous-operand]'),
-			document.querySelector('[data-current-operand]')
-		);
-
-		document.querySelectorAll('[data-number]').forEach(button => {
-			button.addEventListener('click', () => {
-				calculator.appendNumber(button.dataset.number);
-				calculator.updateDisplay();
-			});
-		});
-
-		document.querySelectorAll('[data-operation]').forEach(button => {
-			button.addEventListener('click', () => {
-				calculator.chooseOperation(button.dataset.operation);
-				calculator.updateDisplay();
-			});
-		});
-
-		document.querySelector('[data-action="clear"]').addEventListener('click', () => {
-			calculator.clear();
-			calculator.updateDisplay();
-		});
-
-		document.querySelector('[data-action="delete"]').addEventListener('click', () => {
-			calculator.delete();
-			calculator.updateDisplay();
-		});
-
-		document.querySelector('[data-action="equals"]').addEventListener('click', () => {
-			calculator.compute();
-			calculator.updateDisplay();
-		});
-
-		document.addEventListener('keydown', event => {
-			if (/^[0-9.]$/.test(event.key)) calculator.appendNumber(event.key);
-			else if (event.key === '+' || event.key === '-') calculator.chooseOperation(event.key === '+' ? 'add' : 'subtract');
-			else if (event.key === '*') calculator.chooseOperation('multiply');
-			else if (event.key === '/') calculator.chooseOperation('divide');
-			else if (event.key === 'Enter' || event.key === '=') calculator.compute();
-			else if (event.key === 'Backspace') calculator.delete();
-			else if (event.key === 'Escape') calculator.clear();
-			else return;
-			calculator.updateDisplay();
-		});
-
-		calculator.updateDisplay();
-	</script>
+        hasil.textContent = angka1 + ' ' + operasi + ' ' + angka2 + ' = ' + jawaban;
+      });
+    });
+  </script>
 </body>
 </html>
