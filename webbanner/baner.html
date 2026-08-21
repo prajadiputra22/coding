@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Produk Bank Nusantara</title>
+	<style>
+		:root {
+			--blue: #1769aa;
+			--white: #ffffff;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			color: var(--blue);
+			font-family: "Trebuchet MS", Verdana, sans-serif;
+			background: #e8f4fc;
+		}
+
+		.banner {
+			min-height: 100vh;
+			padding: 34px clamp(24px, 7vw, 96px) 44px;
+			background: #e8f4fc;
+		}
+
+		.topbar,
+		.content {
+			position: relative;
+			z-index: 1;
+			max-width: 1180px;
+			margin: 0 auto;
+		}
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 20px;
+			margin-bottom: clamp(55px, 10vh, 110px);
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			color: var(--blue);
+			font-weight: 800;
+			letter-spacing: 0.04em;
+		}
+
+		.brand-mark {
+			display: grid;
+			width: 42px;
+			height: 42px;
+			place-items: center;
+			color: var(--blue);
+			font-size: 22px;
+			background: rgba(23, 105, 170, 0.16);
+			border-radius: 12px 12px 12px 3px;
+		}
+
+		.contact {
+			color: var(--blue);
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		.intro {
+			max-width: 720px;
+			margin-bottom: 38px;
+		}
+
+		.eyebrow {
+			margin: 0 0 14px;
+			color: var(--blue);
+			font-size: 13px;
+			font-weight: 800;
+			letter-spacing: 0.16em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			max-width: 680px;
+			margin: 0 0 18px;
+			color: var(--blue);
+			font-family: Georgia, serif;
+			font-size: clamp(42px, 6vw, 76px);
+			font-weight: 700;
+			line-height: 0.98;
+		}
+
+		.intro p {
+			max-width: 560px;
+			margin: 0;
+			color: var(--blue);
+			font-size: 17px;
+			line-height: 1.6;
+		}
+
+		.products {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 18px;
+		}
+
+		.product {
+			min-height: 220px;
+			padding: 25px;
+			background: rgba(255, 255, 255, 0.9);
+			border: 1px solid rgba(23, 105, 170, 0.12);
+			border-radius: 8px;
+			box-shadow: 0 14px 30px rgba(16, 42, 67, 0.08);
+		}
+
+		.product-icon {
+			display: grid;
+			width: 48px;
+			height: 48px;
+			margin-bottom: 22px;
+			place-items: center;
+			color: var(--blue);
+			font-size: 23px;
+			background: rgba(23, 105, 170, 0.12);
+			border-radius: 50%;
+		}
+
+		h2 {
+			margin: 0 0 9px;
+			color: var(--blue);
+			font-size: 21px;
+		}
+
+		.product p {
+			margin: 0 0 18px;
+			color: var(--blue);
+			font-size: 14px;
+			line-height: 1.5;
+		}
+
+		.product a {
+			color: var(--blue);
+			font-size: 13px;
+			font-weight: 800;
+			text-decoration: none;
+		}
+
+		.product a::after {
+			content: "  ->";
+		}
+
+		.cta {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 28px;
+			padding: 13px 20px;
+			color: var(--white);
+			background: var(--blue);
+			border-radius: 5px;
+			font-size: 14px;
+			font-weight: 800;
+			text-decoration: none;
+		}
+
+		.cta:hover,
+		.product a:hover {
+			opacity: 0.78;
+		}
+
+		@media (max-width: 760px) {
+			.banner {
+				padding-top: 24px;
+			}
+
+			.topbar {
+				align-items: flex-start;
+				margin-bottom: 65px;
+			}
+
+			.contact {
+				display: none;
+			}
+
+			h1 {
+				font-size: clamp(40px, 13vw, 60px);
+			}
+
+			.products {
+				grid-template-columns: 1fr;
+			}
+
+			.product {
+				min-height: auto;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="banner">
+		<header class="topbar">
+			<div class="brand">
+				<span class="brand-mark">✦</span>
+				<span>BANK A</span>
+			</div>
+			<div class="contact">Melayani dengan sepenuh hati | 0213 456</div>
+		</header>
+
+		<section class="content">
+			<div class="intro">
+				<p class="eyebrow">Pilihan finansial untuk masa depan</p>
+				<h1>Rencanakan hari ini, nikmati esok.</h1>
+				<p>Temukan produk perbankan yang dirancang untuk membantu setiap langkah kehidupan Anda.</p>
+				<a class="cta" href="#produk">Lihat produk <span aria-hidden="true">&#8594;</span></a>
+			</div>
+
+			<section class="products" id="produk" aria-label="Produk perbankan">
+				<article class="product">
+					<div class="product-icon" aria-hidden="true">▣</div>
+					<h2>Tabungan</h2>
+					<p>Simpan uang dengan mudah, aman, dan fleksibel untuk kebutuhan sehari-hari.</p>
+					<a href="#tabungan">Pelajari tabungan</a>
+				</article>
+
+				<article class="product">
+					<div class="product-icon" aria-hidden="true">◈</div>
+					<h2>Deposito</h2>
+					<p>Kembangkan dana Anda dengan pilihan tenor dan imbal hasil yang kompetitif.</p>
+					<a href="#deposito">Pelajari deposito</a>
+				</article>
+
+				<article class="product">
+					<div class="product-icon" aria-hidden="true">↗</div>
+					<h2>Pinjaman</h2>
+					<p>Wujudkan rencana Anda dengan solusi pinjaman yang cepat dan terpercaya.</p>
+					<a href="#pinjaman">Pelajari pinjaman</a>
+				</article>
+			</section>
+		</section>
+	</main>
+</body>
+</html>

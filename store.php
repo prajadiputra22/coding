@@ -1,0 +1,37 @@
+<?php
+session_start();
+require 'db.php';
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$fields = ['nama', 'nik', 'tgl_lahir', 'agama', 'golongan_darah', 'pekerjaan', 'address', 'provinsi'];
+$values = [];
+foreach ($fields as $field) {
+    $values[$field] = trim($_POST[$field] ?? '');
+    if ($values[$field] === '') die('Semua input wajib diisi.');
+}
+
+if (!preg_match('/^[0-9]+$/', $values['nik'])) {
+    $_SESSION['form_error'] = 'NIK hanya boleh berisi angka.';
+    header('Location: create.php');
+    exit;
+}
+
+$check = mysqli_prepare($conn, 'SELECT id FROM employees WHERE nik = ? LIMIT 1');
+mysqli_stmt_bind_param($check, 's', $values['nik']);
+mysqli_stmt_execute($check);
+mysqli_stmt_store_result($check);
+if (mysqli_stmt_num_rows($check) > 0) {
+    $_SESSION['form_error'] = 'NIK sudah terdaftar. Silakan gunakan NIK lain.';
+    $_SESSION['clear_create_form'] = true;
+    header('Location: create.php');
+    exit;
+}
+
+$stmt = mysqli_prepare($conn, 'INSERT INTO employees (nama, nik, tgl_lahir, agama, golongan_darah, pekerjaan, address, provinsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+mysqli_stmt_bind_param($stmt, 'ssssssss', $values['nama'], $values['nik'], $values['tgl_lahir'], $values['agama'], $values['golongan_darah'], $values['pekerjaan'], $values['address'], $values['provinsi']);
+mysqli_stmt_execute($stmt);
+header('Location: index.php');
+exit;
